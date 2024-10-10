@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="~/admin-lte/dist/css/adminlte.min.css" />
+    <link rel="stylesheet" href="~/admin-lte/plugins/fontawesome-free/css/all.min.css" />
+
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Navbar -->
+        @await Html.PartialAsync("_AdminNavbar")
+
+        <!-- Sidebar -->
+        @await Html.PartialAsync("_AdminSidebar")
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+
+        <!-- Footer -->
+        @await Html.PartialAsync("_AdminFooter")
+    </div>
+
+    <!-- AdminLTE JS -->
+    <script src="~/admin-lte/plugins/jquery/jquery.min.js"></script>
+    <script src="~/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admin-lte/dist/js/adminlte.min.js"></script>
+</body>
+</html>

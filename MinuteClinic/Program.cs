@@ -24,7 +24,7 @@ app.UseAuthorization();
 // map route for Admin area
 
 app.MapControllerRoute(
-    name: "Admin",
+    name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 // map route for default area
