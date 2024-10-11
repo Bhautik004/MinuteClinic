@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MinuteClinic.Areas.Admin.Controllers
+namespace MinuteClinic.Controllers
 {
-    [Area("Admin")]
+    [Area("Main")]
     public class VaccineController : Controller
     {
         // GET: VaccineController
         public ActionResult Index()
         {
-            return View();
+            return Content("VaccineController - Index action placeholder");
         }
 
         // GET: VaccineController/Details/5

@@ -13,7 +13,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column font-weight-light" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a class="nav-link"
-                       asp-area="Admin" asp-controller="Vaccine" asp-action="Index">
+                       asp-area="Admin" asp-controller="vaccine" asp-action="index">
                         <i class="nav-icon fa-solid fas fa-syringe"></i>
                         <p>
                             Manage Vaccines
@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a asp-area="Admin" asp-action="Index" asp-controller="Clinic" class="nav-link ">
+                    <a asp-area="Admin" asp-controller="clinics" asp-action="index" class="nav-link ">
                        <i class="nav-icon fas fa-clinic-medical"></i>
                         <p>
                             Manage Clinics
@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/gallery.html" class="nav-link">
+                    <a asp-area="Admin" asp-controller="users" asp-action="index" class="nav-link">
                         <i class="nav-icon far fa-user"></i>
                         <p>
                             Manage Users

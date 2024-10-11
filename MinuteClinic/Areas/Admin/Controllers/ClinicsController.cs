@@ -4,27 +4,27 @@ using Microsoft.AspNetCore.Mvc;
 namespace MinuteClinic.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class VaccineController : Controller
+    public class ClinicsController : Controller
     {
-        // GET: VaccineController
+        // GET: ClinicsController
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: VaccineController/Details/5
+        // GET: ClinicsController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: VaccineController/Create
+        // GET: ClinicsController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: VaccineController/Create
+        // POST: ClinicsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -39,13 +39,13 @@ namespace MinuteClinic.Areas.Admin.Controllers
             }
         }
 
-        // GET: VaccineController/Edit/5
+        // GET: ClinicsController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: VaccineController/Edit/5
+        // POST: ClinicsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -60,13 +60,13 @@ namespace MinuteClinic.Areas.Admin.Controllers
             }
         }
 
-        // GET: VaccineController/Delete/5
+        // GET: ClinicsController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: VaccineController/Delete/5
+        // POST: ClinicsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
