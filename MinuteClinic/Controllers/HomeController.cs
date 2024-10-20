@@ -4,7 +4,7 @@ using MinuteClinic.Models;
 
 namespace MinuteClinic.Controllers;
 
-[Area("Main")]
+
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

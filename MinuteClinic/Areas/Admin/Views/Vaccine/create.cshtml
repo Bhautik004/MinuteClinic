@@ -1,0 +1,99 @@
+﻿@model MinuteClinic.Models.Vaccine
+@{
+    ViewData["Title"] = "Add Vaccines";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    }
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Add Vaccine</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Add Vaccine</h3>
+                        </div>
+                      
+                        <form>
+                            <div class="card-body"> 
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                        <label asp-for="Name">Vaccine Name</label>
+                                        <input asp-for="Name" type="text" class="form-control"
+                                                placeholder="Enter Vaccine name"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label asp-for="Price">Price</label>
+                                            <input asp-for="Price" type="text" class="form-control"
+                                                placeholder="Enter Price"/>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label asp-for="VaccineImage">Vaccine Image</label>
+                                            <input asp-for="VaccineImage" type="file" class="form-control"
+                                                placeholder="Enter Vaccine Image"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label asp-for="ClinicId">Clinic Name</label>
+                                            <select asp-for="ClinicId" class="form-control">
+                                                <option value="">Select Clinic</option>
+                                                <option value="1">Minute Clinic</option>
+                                                <option value="2">Health Clinic</option>
+                                                <option value="3">Care Clinic</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label asp-for="ProviderId">Provider Name</label>
+                                            <select asp-for="ProviderId" class="form-control">
+                                                <option value="">Select Provider</option>
+                                                <option value="1">Dr. John Doe</option>
+                                                <option value="2">Dr. Jane Doe</option>
+                                                <option value="3">Dr. Smith</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label asp-for="AvailableTimeSlots">Available Time Slots</label>
+                                            <input asp-for="AvailableTimeSlots" type="text" class="form-control"
+                                                placeholder="Enter Available Time Slots"/>
+                                        </div>
+                                    </div>
+
+                                   
+                                </div>
+                             
+                                
+                            </div>
+
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </section>

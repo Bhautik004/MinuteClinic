@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MinuteClinic.Controllers
 {
-    [Area("Main")]
+   
     public class VaccineController : Controller
     {
         // GET: VaccineController
