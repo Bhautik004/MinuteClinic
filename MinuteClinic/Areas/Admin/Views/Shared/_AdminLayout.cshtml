@@ -84,6 +84,16 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                    <strong>@TempData["SuccessMessage"]</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
             @RenderBody()
         </div>
 
@@ -102,5 +112,15 @@
     <script src="~/admin-lte/plugins/jquery/jquery.min.js"></script>
     <script src="~/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/admin-lte/dist/js/adminlte.min.js"></script>
+
+
+    <script>
+        // Automatically hide the alert after 3 seconds (3000 ms)
+        setTimeout(function () {
+            $('#successAlert').fadeOut('slow', function () {
+                $(this).alert('close'); // Close it after the fadeOut
+            });
+        }, 3000); // 3000 milliseconds = 3 seconds
+    </script>
 </body>
 </html>

@@ -8,6 +8,12 @@ namespace MinuteClinic.Models
         [Key]
         public int ClinicId { get; set; }
 
+
+        [Required(ErrorMessage = "Clinic name is required.")]
+        [StringLength(100, ErrorMessage = "Clinic name cannot be longer than 100 characters.")]
+        [Display(Name = "Clinic Name")]
+        public string ClinicName { get; set; }
+
         [Required(ErrorMessage = "Location is required.")]
         [StringLength(200, ErrorMessage = "Location cannot be longer than 200 characters.")]
         [Display(Name = "Clinic Location")]

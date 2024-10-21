@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<MinuteClinic.Models.Vaccine>
+@{
     ViewData["Title"] = "Manage Vaccines";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
@@ -45,19 +46,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1.</td>
-                                    <td>Covid Shild</td>
-                                    <td>100$</td>
-                                    <td>Photo</td>
-                                    <td>Minute Clinic</td>
-                                    <td>Dr. John Doe</td>
-                                    <td>10:00 AM - 12:00 PM</td>
-                                    <td>
-                                        <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
+                                @foreach (var vaccines in Model)
+                                {
+                                    <tr>
+                                        <td>#</td>
+                                        <td>@vaccines.Name</td>
+                                        <td>@vaccines.Price.ToString("C")</td>
+                                        <td><img src="~/") /></td>
+                                        <td>@vaccines.Clinic.ClinicName</td>
+                                        <td>@vaccines.Providers.Name</td>
+                                        <td>@vaccines.AvailableTimeSlots</td>
+                                        <td>
+                                            <a class="btn btn-primary" asp-area="Admin" asp-controller="Vaccine" asp-action="Edit" asp-route-id="@vaccines.VaccineId"><i class="fas fa-edit"></i> Edit</a>
+                                            <a class="btn btn-danger" asp-area="Admin" asp-controller="Vaccine" asp-action="Delete" asp-route-id="@vaccines.VaccineId"><i class="fas fa-trash"></i> Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                               
                                
                             </tbody>
                         </table>

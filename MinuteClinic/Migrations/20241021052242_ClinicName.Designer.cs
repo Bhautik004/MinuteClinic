@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinuteClinic.Models;
 
@@ -10,9 +11,11 @@ using MinuteClinic.Models;
 namespace MinuteClinic.Migrations
 {
     [DbContext(typeof(MinuteClinicContext))]
-    partial class MinuteClinicContextModelSnapshot : ModelSnapshot
+    [Migration("20241021052242_ClinicName")]
+    partial class ClinicName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,35 +58,6 @@ namespace MinuteClinic.Migrations
                     b.HasKey("ClinicId");
 
                     b.ToTable("Clinics", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            ClinicId = 1,
-                            City = "Anytown",
-                            ClinicName = "NY Clinic",
-                            Location = "1234 Elm St",
-                            State = "NY",
-                            ZipCode = 12345
-                        },
-                        new
-                        {
-                            ClinicId = 2,
-                            City = "Othertown",
-                            ClinicName = "IL Clinic",
-                            Location = "5678 Oak St",
-                            State = "IL",
-                            ZipCode = 45678
-                        },
-                        new
-                        {
-                            ClinicId = 3,
-                            City = "Thirdtown",
-                            ClinicName = "MI Clinic",
-                            Location = "91011 Pine St",
-                            State = "MI",
-                            ZipCode = 90012
-                        });
                 });
 
             modelBuilder.Entity("MinuteClinic.Models.Provider", b =>
@@ -107,26 +81,6 @@ namespace MinuteClinic.Migrations
                     b.HasKey("ProviderId");
 
                     b.ToTable("Provider", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            ProviderId = 1,
-                            Address = "NY",
-                            Name = "Moderna"
-                        },
-                        new
-                        {
-                            ProviderId = 2,
-                            Address = "PL",
-                            Name = "AstraZeneca"
-                        },
-                        new
-                        {
-                            ProviderId = 3,
-                            Address = "IL",
-                            Name = "Pfizer"
-                        });
                 });
 
             modelBuilder.Entity("MinuteClinic.Models.Vaccine", b =>
@@ -176,7 +130,7 @@ namespace MinuteClinic.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MinuteClinic.Models.Provider", "Providers")
+                    b.HasOne("MinuteClinic.Models.Provider", "Provider")
                         .WithMany()
                         .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -184,7 +138,7 @@ namespace MinuteClinic.Migrations
 
                     b.Navigation("Clinic");
 
-                    b.Navigation("Providers");
+                    b.Navigation("Provider");
                 });
 #pragma warning restore 612, 618
         }

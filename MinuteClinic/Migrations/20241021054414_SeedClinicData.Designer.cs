@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinuteClinic.Models;
 
@@ -10,9 +11,11 @@ using MinuteClinic.Models;
 namespace MinuteClinic.Migrations
 {
     [DbContext(typeof(MinuteClinicContext))]
-    partial class MinuteClinicContextModelSnapshot : ModelSnapshot
+    [Migration("20241021054414_SeedClinicData")]
+    partial class SeedClinicData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,26 +110,6 @@ namespace MinuteClinic.Migrations
                     b.HasKey("ProviderId");
 
                     b.ToTable("Provider", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            ProviderId = 1,
-                            Address = "NY",
-                            Name = "Moderna"
-                        },
-                        new
-                        {
-                            ProviderId = 2,
-                            Address = "PL",
-                            Name = "AstraZeneca"
-                        },
-                        new
-                        {
-                            ProviderId = 3,
-                            Address = "IL",
-                            Name = "Pfizer"
-                        });
                 });
 
             modelBuilder.Entity("MinuteClinic.Models.Vaccine", b =>

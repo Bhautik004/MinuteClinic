@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinuteClinic.Models;
 
@@ -10,9 +11,11 @@ using MinuteClinic.Models;
 namespace MinuteClinic.Migrations
 {
     [DbContext(typeof(MinuteClinicContext))]
-    partial class MinuteClinicContextModelSnapshot : ModelSnapshot
+    [Migration("20241021055302_SeedProviderData")]
+    partial class SeedProviderData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

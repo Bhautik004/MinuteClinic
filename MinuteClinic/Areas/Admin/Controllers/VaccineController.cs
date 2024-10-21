@@ -19,15 +19,50 @@ namespace MinuteClinic.Areas.Admin.Controllers
     [Route("Admin/Vaccine")]
         public ActionResult Index()
         {
-            return View();
+            
+            var vaccines = context.Vaccines
+                                  .Include(v => v.Clinic)
+                                  .Include(v => v.Providers)
+                                  .OrderBy(v => v.Name)  // Optional: order by name
+                                  .ToList();
+            return View(vaccines);
         }
 
         [Route("Admin/Vaccine/create")]
         public ActionResult Create()
         {
-            //ViewBag.clinic = context.Clinics.OrderBy(g => g.).ToList();
+            ViewBag.clinic = context.Clinics.OrderBy(g => g.ClinicName).ToList();
+            ViewBag.provider = context.Providers.OrderBy(g => g.Name).ToList();
+
+            var availableTimeSlots = new Vaccine().AvailableTimeSlots.Split(',');
+
+            ViewBag.TimeSlots = availableTimeSlots;
 
             return View();
+        }
+
+        [HttpPost]
+        [Route("Admin/Vaccine/create")]
+        public ActionResult Create(Vaccine vaccine)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Vaccines.Add(vaccine);
+                context.SaveChanges();
+                TempData["SuccessMessage"] = "Vaccine has been added successfully!";
+
+                ModelState.Clear();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.clinic = context.Clinics.OrderBy(g => g.ClinicName).ToList();
+                ViewBag.provider = context.Providers.OrderBy(g => g.Name).ToList();
+                var availableTimeSlots = new Vaccine().AvailableTimeSlots.Split(',');
+
+                ViewBag.TimeSlots = availableTimeSlots;
+                return View(vaccine);
+            }
         }
 
         
