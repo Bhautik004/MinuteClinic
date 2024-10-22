@@ -35,8 +35,8 @@ app.MapControllerRoute(
 
 // map route for default area
 app.MapControllerRoute(
-    name: "main",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 

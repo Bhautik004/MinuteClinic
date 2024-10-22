@@ -7,27 +7,33 @@ namespace MinuteClinic.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
+    
 
     [Route("")]
-    public IActionResult Index()
+    public ActionResult Index()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    public ActionResult ManagePrescription()
     {
-        return View();
+        return Content("Manage Prescription Action");
+    }
+    public ActionResult ManageCart()
+    {
+        return Content("Shopping Cart Action");
+    }
+    
+    public ActionResult ManagePayment()
+    {
+        return Content("Insurance and Payment Action");
+    }
+    public ActionResult Managerecords()
+    {
+        return Content("Medical records Action");
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+
+
+
 }

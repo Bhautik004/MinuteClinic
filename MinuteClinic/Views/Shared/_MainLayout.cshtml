@@ -111,16 +111,16 @@
                                     <ul>
 
                                         <li>
-                                            <a asp-area="main" asp-controller="Vaccine" asp-action="Index">Schedule Vaccine</a>
+                                            <a asp-controller="Vaccine" asp-action="Index">Schedule Vaccine</a>
                                         </li>
                                         <li>
-                                            <a href="#">Manage Prescription</a>
+                                            <a asp-controller="Home" asp-action="ManagePrescription">Manage Prescription</a>
                                         </li>
                                         <li>
-                                            <a href="#">Insurance and Payment</a>
+                                            <a asp-controller="Home" asp-action="ManagePayment">Insurance and Payment</a>
                                         </li>
                                         <li>
-                                            <a href="#">Medical records</a>
+                                            <a asp-controller="Home" asp-action="Managerecords">Medical records</a>
                                         </li>
 
                                         <li>
@@ -149,9 +149,9 @@
                             <div class="header-action-items-layout1">
                                 <ul>
                                     <li class="cart-area-dark">
-                                        <a class="cart-trigger-icon" href="#">
+                                        <a class="cart-trigger-icon" asp-controller="Home" asp-action="ManageCart">
                                             <i class="flaticon-shopping-cart"></i>
-                                            <span>2</span>
+                                            <span>0</span>
                                         </a>
                                     </li>
                                     <li>

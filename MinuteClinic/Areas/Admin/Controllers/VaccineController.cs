@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MinuteClinic.Models;
 
@@ -17,15 +18,34 @@ namespace MinuteClinic.Areas.Admin.Controllers
 
     // GET: VaccineController
     [Route("Admin/Vaccine")]
-        public ActionResult Index()
+        public IActionResult Index(int? ClinicId, int? ProviderId)
         {
-            
+            // Fetch the clinics and providers
+            var clinics = context.Clinics.ToList();
+            var providers = context.Providers.ToList();
+
+            // Populate the ViewBag with SelectList items for the dropdowns
+            ViewBag.ClinicList = new SelectList(clinics, "ClinicId", "ClinicName", ClinicId);
+            ViewBag.ProviderList = new SelectList(providers, "ProviderId", "Name", ProviderId);
+
+            // Fetch vaccines with optional filtering
             var vaccines = context.Vaccines
-                                  .Include(v => v.Clinic)
-                                  .Include(v => v.Providers)
-                                  .OrderBy(v => v.Name)  // Optional: order by name
-                                  .ToList();
-            return View(vaccines);
+                                   .Include(v => v.Clinic)
+                                   .Include(v => v.Providers)
+                                   .AsQueryable();
+
+            // Apply filtering if ClinicId or ProviderId is provided
+            if (ClinicId.HasValue)
+            {
+                vaccines = vaccines.Where(v => v.ClinicId == ClinicId.Value);
+            }
+
+            if (ProviderId.HasValue)
+            {
+                vaccines = vaccines.Where(v => v.ProviderId == ProviderId.Value);
+            }
+
+            return View(vaccines.ToList());
         }
 
         [Route("Admin/Vaccine/create")]
@@ -65,6 +85,22 @@ namespace MinuteClinic.Areas.Admin.Controllers
             }
         }
 
-        
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var vaccine = context.Vaccines.Find(id);
+            if (vaccine == null)
+            {
+                return NotFound();
+            }
+            context.Vaccines.Remove(vaccine);
+            context.SaveChanges();
+            TempData["SuccessMessage"] = "Delete successfully!";
+
+            return RedirectToAction("Index");
+        }
+
+
     }
 }
