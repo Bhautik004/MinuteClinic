@@ -25,7 +25,7 @@ namespace MinuteClinic.Models
         [Range(1, 10000, ErrorMessage = "Price must be between 1 and 10,000.")]
         public int Price { get; set; }
 
-        public string ? VaccineImage { get; set; }
+        public string? VaccineImage { get; set; }
 
 
         [Required(ErrorMessage = "Clinic is required.")]

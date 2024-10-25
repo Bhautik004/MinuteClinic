@@ -14,10 +14,11 @@ namespace MinuteClinic.Areas.Admin.Controllers
         private MinuteClinicContext context { get; set; }
 
         public VaccineController(MinuteClinicContext ctx) => context = ctx;
-    
 
-    // GET: VaccineController
-    [Route("Admin/Vaccine")]
+
+        // GET: VaccineController
+
+        [Route("Admin/Vaccine")]
         public IActionResult Index(int? ClinicId, int? ProviderId)
         {
             // Fetch the clinics and providers
@@ -48,11 +49,16 @@ namespace MinuteClinic.Areas.Admin.Controllers
             return View(vaccines.ToList());
         }
 
+
+
         [Route("Admin/Vaccine/create")]
-        public ActionResult Create()
+        public IActionResult Create()
         {
-            ViewBag.clinic = context.Clinics.OrderBy(g => g.ClinicName).ToList();
-            ViewBag.provider = context.Providers.OrderBy(g => g.Name).ToList();
+            var clinics = context.Clinics.ToList();
+            var providers = context.Providers.ToList();
+
+            ViewBag.ClinicList = new SelectList(clinics, "ClinicId", "ClinicName");
+            ViewBag.ProviderList = new SelectList(providers, "ProviderId", "Name");
 
             var availableTimeSlots = new Vaccine().AvailableTimeSlots.Split(',');
 
@@ -63,7 +69,7 @@ namespace MinuteClinic.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("Admin/Vaccine/create")]
-        public ActionResult Create(Vaccine vaccine)
+        public IActionResult Create(Vaccine vaccine)
         {
             if (ModelState.IsValid)
             {
@@ -85,8 +91,62 @@ namespace MinuteClinic.Areas.Admin.Controllers
             }
         }
 
-
         [HttpGet]
+        [Route("Admin/Vaccine/Edit/{id}")]
+        public IActionResult Edit(int id)
+        {
+            var vaccine = context.Vaccines
+                                 .Include(v => v.Clinic)
+                                 .Include(v => v.Providers)
+                                 .FirstOrDefault(v => v.VaccineId == id);
+
+            if (vaccine == null)
+            {
+                return NotFound();
+            }
+
+            // Populate ViewBag for dropdowns
+            ViewBag.ClinicList = new SelectList(context.Clinics.OrderBy(c => c.ClinicName), "ClinicId", "ClinicName", vaccine.ClinicId);
+            ViewBag.ProviderList = new SelectList(context.Providers.OrderBy(p => p.Name), "ProviderId", "Name", vaccine.ProviderId);
+
+            var availableTimeSlots = new Vaccine().AvailableTimeSlots.Split(',');
+
+            ViewBag.TimeSlots = availableTimeSlots;
+
+            return View(vaccine);
+        }
+
+        [HttpPost]
+        [Route("Admin/Vaccine/Edit/{id}")]
+        public IActionResult Edit(int id, Vaccine vaccine)
+        {
+            if (id != vaccine.VaccineId)
+            {
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid)
+            {
+                context.Vaccines.Update(vaccine);
+                context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Vaccine details updated successfully!";
+                return RedirectToAction("Index");
+            }
+
+            // Repopulate dropdowns if ModelState is invalid
+            ViewBag.ClinicList = new SelectList(context.Clinics.OrderBy(c => c.ClinicName), "ClinicId", "ClinicName", vaccine.ClinicId);
+            ViewBag.ProviderList = new SelectList(context.Providers.OrderBy(p => p.Name), "ProviderId", "Name", vaccine.ProviderId);
+            var availableTimeSlots = new Vaccine().AvailableTimeSlots.Split(',');
+
+            ViewBag.TimeSlots = availableTimeSlots;
+            return View(vaccine);
+        }
+
+
+
+
+        [HttpPost]
         public ActionResult Delete(int id)
         {
             var vaccine = context.Vaccines.Find(id);
@@ -94,10 +154,10 @@ namespace MinuteClinic.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
             context.Vaccines.Remove(vaccine);
             context.SaveChanges();
             TempData["SuccessMessage"] = "Delete successfully!";
-
             return RedirectToAction("Index");
         }
 

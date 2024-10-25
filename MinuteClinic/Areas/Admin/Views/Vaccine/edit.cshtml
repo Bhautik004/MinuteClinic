@@ -1,0 +1,118 @@
+﻿@model MinuteClinic.Models.Vaccine
+
+@{
+    ViewData["Title"] = "Edit Vaccines";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Update Vaccine</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Update Vaccine</h3>
+                    </div>
+
+                    <form asp-area="Admin" asp-action="Edit" asp-controller="Vaccine" method="post" enctype="multipart/form-data">
+                        @Html.HiddenFor(model => model.VaccineId)
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label asp-for="Name">Vaccine Name</label>
+                                        <input asp-for="Name" type="text" class="form-control"
+                                               placeholder="Enter Vaccine name" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label asp-for="Price">Price</label>
+                                        <input asp-for="Price" class="form-control"
+                                               placeholder="Enter Price" type="number" />
+                                        <span asp-validation-for="Price" class="text-danger"></span>
+
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label asp-for="VaccineImage">Vaccine Image</label>
+                                        <input type="file" asp-for="VaccineImage">
+                                        <span asp-validation-for="VaccineImage" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label asp-for="ClinicId">Clinic Name</label>
+                                        <select class="form-control" id="ClinicId" name="ClinicId"
+                                                asp-items="ViewBag.ClinicList">
+                                            <option value="">Select a clinic</option>
+                                        </select>
+
+                                        <span asp-validation-for="ClinicId" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label asp-for="ProviderId">Provider Name</label>
+                                        <select class="form-control" id="ProviderId" name="ProviderId"
+                                                asp-items="ViewBag.ProviderList">
+                                            <option value="">Select a Provider</option>
+
+
+                                        </select>
+
+                                        <span asp-validation-for="ProviderId" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label asp-for="AvailableTimeSlots">Available Time Slots</label>
+                                        <select asp-for="AvailableTimeSlots" class="form-control">
+                                            <option value="">Select a time slot</option>
+                                            @foreach (var timeSlot in ViewBag.TimeSlots)
+                                            {
+                                                <option value="@timeSlot">@timeSlot</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="AvailableTimeSlots" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
