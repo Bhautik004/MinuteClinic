@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MinuteClinic.Models.Vaccine>
+﻿@model MinuteClinic.Models.VaccineViewModel
 @{
     ViewData["Title"] = "Manage Vaccines";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -29,8 +29,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="ClinicId">Filter by Clinic</label>
-                                        <select class="form-control" id="ClinicId" name="ClinicId"
-                                                asp-items="ViewBag.ClinicList">
+                                      
+                                        <select asp-for="SelectedClinicId" asp-items="Model.Clinics" class="form-control" name="ClinicId">
                                             <option value="">All Clinics</option>
                                         </select>
                                     </div>
@@ -40,16 +40,17 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="ProviderId">Filter by Provider</label>
-                                        <select class="form-control" id="ProviderId" name="ProviderId"
-                                                asp-items="ViewBag.ProviderList">
+                                       
+                                        <select asp-for="SelectedProviderId" asp-items="Model.Providers" class="form-control" name="ProviderId">
                                             <option value="">All Providers</option>
                                         </select>
+
                                     </div>
                                 </div>
 
                                 <div class="col-md-12">
                                     <button type="submit" class="btn btn-primary">Filter</button>
-                                    <a asp-area ="Admin" asp-controller="Vaccine" class="btn btn-danger">Clear Filter</a>
+                                    <a asp-area="Admin" asp-controller="Vaccine" asp-action="Index"  class="btn btn-danger">Clear Filter</a>
                                 </div>
                             </div>
                         </form>
@@ -80,19 +81,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var vaccines in Model)
+                                @foreach (var vaccine in Model.Vaccines)
                                 {
                                     <tr>
                                         <th scope="row">@counter</th>
-                                        <td>@vaccines.Name</td>
-                                        <td>@vaccines.Price.ToString("C")</td>
-                                        <td><img src="~/") /></td>
-                                        <td>@vaccines.Clinic.ClinicName</td>
-                                        <td>@vaccines.Providers.Name</td>
-                                        <td>@vaccines.AvailableTimeSlots</td>
+                                        <td>@vaccine.Name</td>
+                                        <td>@vaccine.Price.ToString("C")</td>
+                                        <td><img src="~/VaccineImages/@vaccine.VaccineImage" ) style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;" /></td>
+                                        <td>@vaccine.Clinic.ClinicName</td>
+                                        <td>@vaccine.Providers.Name</td>
+                                        <td>@vaccine.AvailableTimeSlots</td>
                                         <td>
-                                            <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="Vaccine" asp-action="Edit" asp-route-id="@vaccines.VaccineId"><i class="fas fa-edit"></i> Edit</a>
-                                            <a class="btn btn-danger btn-sm" onclick="confirmDelete('@vaccines.VaccineId')"><i class="fas fa-trash"></i> Delete</a>
+                                            <a class="btn btn-primary btn-sm" asp-area="Admin" asp-controller="Vaccine" asp-action="Edit" asp-route-id="@vaccine.VaccineId"><i class="fas fa-edit"></i> Edit</a>
+                                            <a class="btn btn-danger btn-sm" onclick="confirmDelete('@vaccine.VaccineId')"><i class="fas fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
                                     counter++;

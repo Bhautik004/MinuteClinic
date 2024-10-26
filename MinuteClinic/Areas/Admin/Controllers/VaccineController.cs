@@ -22,31 +22,45 @@ namespace MinuteClinic.Areas.Admin.Controllers
         public IActionResult Index(int? ClinicId, int? ProviderId)
         {
             // Fetch the clinics and providers
-            var clinics = context.Clinics.ToList();
-            var providers = context.Providers.ToList();
+            // Query to get all clinics and manufacturers for dropdowns
+            var clinics = context.Clinics.Select(c => new SelectListItem
+            {
+                Value = c.ClinicId.ToString(),
+                Text = c.ClinicName
+            }).ToList();
 
-            // Populate the ViewBag with SelectList items for the dropdowns
-            ViewBag.ClinicList = new SelectList(clinics, "ClinicId", "ClinicName", ClinicId);
-            ViewBag.ProviderList = new SelectList(providers, "ProviderId", "Name", ProviderId);
+            var providers = context.Providers.Select(m => new SelectListItem
+            {
+                Value = m.ProviderId.ToString(),
+                Text = m.Name
+            }).ToList();
 
-            // Fetch vaccines with optional filtering
-            var vaccines = context.Vaccines
-                                   .Include(v => v.Clinic)
-                                   .Include(v => v.Providers)
-                                   .AsQueryable();
+            var vaccinesQuery = context.Vaccines
+                .Include(v => v.Clinic)         // Ensure Clinic is loaded
+                .Include(v => v.Providers)      // Ensure Providers is loaded
+                .AsQueryable();
 
-            // Apply filtering if ClinicId or ProviderId is provided
             if (ClinicId.HasValue)
             {
-                vaccines = vaccines.Where(v => v.ClinicId == ClinicId.Value);
+                vaccinesQuery = vaccinesQuery.Where(v => v.ClinicId == ClinicId.Value);
             }
 
             if (ProviderId.HasValue)
             {
-                vaccines = vaccines.Where(v => v.ProviderId == ProviderId.Value);
+                vaccinesQuery = vaccinesQuery.Where(v => v.ProviderId == ProviderId.Value);
             }
 
-            return View(vaccines.ToList());
+            var model = new VaccineViewModel
+            {
+                SelectedClinicId = ClinicId,
+                SelectedProviderId = ProviderId,
+                Clinics = clinics,
+                Providers = providers,
+                Vaccines = vaccinesQuery.ToList() // Execute the query to get the filtered vaccines
+            };
+
+            return View(model);
+
         }
 
 
@@ -69,10 +83,22 @@ namespace MinuteClinic.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("Admin/Vaccine/create")]
-        public IActionResult Create(Vaccine vaccine)
+        public IActionResult Create(Vaccine vaccine, IFormFile VaccineImage)
         {
             if (ModelState.IsValid)
             {
+                string fileName = VaccineImage.FileName;
+                string ext = fileName.Split('.').Last();
+                fileName = Guid.NewGuid() + "." + ext;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/VaccineImages", fileName);
+                using (var fileStream = new FileStream(path
+                    , FileMode.Create, FileAccess.Write))
+                {
+                    VaccineImage.CopyTo(fileStream);
+                }
+                vaccine.VaccineImage = fileName;
+
+
                 context.Vaccines.Add(vaccine);
                 context.SaveChanges();
                 TempData["SuccessMessage"] = "Vaccine has been added successfully!";
@@ -82,8 +108,12 @@ namespace MinuteClinic.Areas.Admin.Controllers
             }
             else
             {
-                ViewBag.clinic = context.Clinics.OrderBy(g => g.ClinicName).ToList();
-                ViewBag.provider = context.Providers.OrderBy(g => g.Name).ToList();
+                var clinics = context.Clinics.ToList();
+                var providers = context.Providers.ToList();
+
+                ViewBag.ClinicList = new SelectList(clinics, "ClinicId", "ClinicName");
+                ViewBag.ProviderList = new SelectList(providers, "ProviderId", "Name");
+
                 var availableTimeSlots = new Vaccine().AvailableTimeSlots.Split(',');
 
                 ViewBag.TimeSlots = availableTimeSlots;
@@ -118,7 +148,7 @@ namespace MinuteClinic.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("Admin/Vaccine/Edit/{id}")]
-        public IActionResult Edit(int id, Vaccine vaccine)
+        public IActionResult Edit(int id, Vaccine vaccine, IFormFile? VaccineImage)
         {
             if (id != vaccine.VaccineId)
             {
@@ -127,6 +157,36 @@ namespace MinuteClinic.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                var originalVaccine = context.Vaccines.AsNoTracking().FirstOrDefault(v => v.VaccineId == id);
+
+                if (VaccineImage != null)
+                {
+                    
+                    var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/VaccineImages", originalVaccine.VaccineImage);
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+
+                    // Save the new image
+                    string newFileName = Guid.NewGuid() + Path.GetExtension(VaccineImage.FileName);
+                    string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/VaccineImages", newFileName);
+                    using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+                    {
+                        VaccineImage.CopyTo(fileStream);
+                    }
+
+                    // Update the vaccine record with the new image file name
+                    vaccine.VaccineImage = newFileName;
+                }
+                else
+                {
+                    // Keep the existing image filename if no new image is uploaded
+                    vaccine.VaccineImage = originalVaccine.VaccineImage;
+                }
+
+
+
                 context.Vaccines.Update(vaccine);
                 context.SaveChanges();
 
@@ -146,7 +206,7 @@ namespace MinuteClinic.Areas.Admin.Controllers
 
 
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult Delete(int id)
         {
             var vaccine = context.Vaccines.Find(id);
@@ -155,6 +215,12 @@ namespace MinuteClinic.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/VaccineImages", vaccine.VaccineImage);
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);  // Delete the image file
+            }
+          
             context.Vaccines.Remove(vaccine);
             context.SaveChanges();
             TempData["SuccessMessage"] = "Delete successfully!";

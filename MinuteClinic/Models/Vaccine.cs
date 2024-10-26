@@ -25,7 +25,8 @@ namespace MinuteClinic.Models
         [Range(1, 10000, ErrorMessage = "Price must be between 1 and 10,000.")]
         public int Price { get; set; }
 
-        public string? VaccineImage { get; set; }
+        [Required(ErrorMessage = "Vaccine Image is required.")]
+        public string ? VaccineImage { get; set; }
 
 
         [Required(ErrorMessage = "Clinic is required.")]
@@ -38,10 +39,12 @@ namespace MinuteClinic.Models
 
         [Required(ErrorMessage = "Provider is required.")]
         public int ProviderId { get; set; }
+
+        [Required(ErrorMessage = "Provider is required.")]
         [ValidateNever]
         public Provider Providers { get; set; } = null!;
 
-
+        [Required(ErrorMessage = "Available Time Slots is required.")]
         public string AvailableTimeSlots { get; set; } = "10:00 AM,10:30 AM,11:00 AM,11:30 AM,12:00 PM,12:30 PM,1:00 PM,1:30 PM";
 
 

@@ -97,6 +97,15 @@
 
                                     </div>
                                 </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Current Image</label><br />
+                                        @if (!string.IsNullOrEmpty(Model.VaccineImage))
+                                        {
+                                            <img src="~/VaccineImages/@Model.VaccineImage" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;" />
+                                        }
+                                    </div>
+                                </div>
 
 
                             </div>
