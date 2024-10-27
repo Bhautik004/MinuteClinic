@@ -23,9 +23,9 @@ namespace MinuteClinic.Models
 
         [Required(ErrorMessage = "Price is required.")]
         [Range(1, 10000, ErrorMessage = "Price must be between 1 and 10,000.")]
-        public int Price { get; set; }
+        public int? Price { get; set; }
 
-        [Required(ErrorMessage = "Vaccine Image is required.")]
+       
         public string ? VaccineImage { get; set; }
 
 
@@ -34,11 +34,11 @@ namespace MinuteClinic.Models
         public Clinics Clinic { get; set; } = null!;
 
         [Required(ErrorMessage = "Clinic is required.")]
-        public int ClinicId { get; set; }
+        public int ?ClinicId { get; set; }
 
 
         [Required(ErrorMessage = "Provider is required.")]
-        public int ProviderId { get; set; }
+        public int? ProviderId { get; set; }
 
         [Required(ErrorMessage = "Provider is required.")]
         [ValidateNever]

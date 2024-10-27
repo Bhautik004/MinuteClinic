@@ -86,7 +86,7 @@
                                     <tr>
                                         <th scope="row">@counter</th>
                                         <td>@vaccine.Name</td>
-                                        <td>@vaccine.Price.ToString("C")</td>
+                                        <td>@vaccine.Price?.ToString("C") ?? "N/A"</td>
                                         <td><img src="~/VaccineImages/@vaccine.VaccineImage" ) style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;" /></td>
                                         <td>@vaccine.Clinic.ClinicName</td>
                                         <td>@vaccine.Providers.Name</td>

@@ -87,38 +87,36 @@ namespace MinuteClinic.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                string fileName = VaccineImage.FileName;
-                string ext = fileName.Split('.').Last();
-                fileName = Guid.NewGuid() + "." + ext;
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/VaccineImages", fileName);
-                using (var fileStream = new FileStream(path
-                    , FileMode.Create, FileAccess.Write))
+                if (VaccineImage != null && VaccineImage.Length > 0)
                 {
-                    VaccineImage.CopyTo(fileStream);
+                    // Generate a unique file name to avoid collisions
+                    string fileName = Guid.NewGuid() + Path.GetExtension(VaccineImage.FileName);
+                    string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/VaccineImages", fileName);
+
+                    // Save the file
+                    using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+                    {
+                        VaccineImage.CopyTo(fileStream);
+                    }
+
+                    // Set the file name in the model
+                    vaccine.VaccineImage = fileName;
                 }
-                vaccine.VaccineImage = fileName;
+                
 
-
+                // Save to database
                 context.Vaccines.Add(vaccine);
                 context.SaveChanges();
                 TempData["SuccessMessage"] = "Vaccine has been added successfully!";
-
-                ModelState.Clear();
                 return RedirectToAction("Index");
             }
-            else
-            {
-                var clinics = context.Clinics.ToList();
-                var providers = context.Providers.ToList();
 
-                ViewBag.ClinicList = new SelectList(clinics, "ClinicId", "ClinicName");
-                ViewBag.ProviderList = new SelectList(providers, "ProviderId", "Name");
+            // Repopulate dropdowns if model validation fails
+            ViewBag.ClinicList = new SelectList(context.Clinics, "ClinicId", "ClinicName");
+            ViewBag.ProviderList = new SelectList(context.Providers, "ProviderId", "Name");
+            ViewBag.TimeSlots = new Vaccine().AvailableTimeSlots.Split(',');
 
-                var availableTimeSlots = new Vaccine().AvailableTimeSlots.Split(',');
-
-                ViewBag.TimeSlots = availableTimeSlots;
-                return View(vaccine);
-            }
+            return View(vaccine);
         }
 
         [HttpGet]
